@@ -18,7 +18,7 @@ class Pelanggan2301010068Factory extends Factory
     {
         return [
             'kode'=>$this->faker->unique()->regexify('[A-Za-z0-9]{4}'),
-            'nama_pelanggan'=>$this->faker->word(),
+            'nama_pelanggan'=>$this->faker->name(),
             'alamat'=>$this->faker->streetAddress(),
             'jenis_kelamin'=>$this->faker->randomElement(['L', 'P']),
             'tanggal_lahir'=>$this->faker->date()

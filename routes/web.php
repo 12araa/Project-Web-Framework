@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-// Route::get('/', function(){
-//     return redirect()->route('barang_index');
-// });
+Route::get('/', function(){
+    return redirect()->route('barang_index');
+});
 
 Route::get('/barang', [BarangController::class, 'index'])->name('barang_index');
 Route::get('/barang/create', [BarangController::class, 'create'])->name('barang_create');

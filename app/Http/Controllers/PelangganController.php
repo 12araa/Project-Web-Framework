@@ -10,15 +10,21 @@ class PelangganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pelanggan = Pelanggan2301010068::all();
+        $search = $request->search;
 
-        return view('pages.pelanggan.indexPelanggan', [
-            'pelanggan' => $pelanggan
-        ]);
+    $pelanggan = Pelanggan2301010068::query()
+        ->when($search, function($query) use ($search) {
+            $query->where('nama_pelanggan', 'LIKE', "%{$search}%")
+                  ->orWhere('kode', 'LIKE', "%{$search}%")
+                  ->orWhere('alamat', 'LIKE', "%{$search}%");
+        })
+        ->paginate(15);
 
-        return view('pages.pelanggan.indexPelanggan');
+    return view('pages.pelanggan.indexPelanggan', [
+        'pelanggan' => $pelanggan
+    ]);
     }
 
     /**
@@ -41,37 +47,54 @@ class PelangganController extends Controller
             'jenis_kelamin'=> $request->jenis_kelamin,
             'tanggal_lahir'=>$request->tanggal_lahir
         ]);
+
+        return redirect()->route('pelanggan_index')->with('created', 'Data berhasil ditambahkan!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($pelanggan_id)
     {
-        //
+        $pelanggan = Pelanggan2301010068::where('id', $pelanggan_id)->first();
+
+        return view('pages.pelanggan.showPelanggan', compact('pelanggan'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($pelanggan_id)
     {
-        //
+        $pelanggan = Pelanggan2301010068::findOrFail($pelanggan_id);
+
+        return view('pages.pelanggan.editPelanggan', compact('pelanggan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $pelanggan_id)
     {
-        //
+        Pelanggan2301010068::where('id', $pelanggan_id)->update([
+            'kode'=> $request->kode,
+            'nama_pelanggan'=> $request->nama_pelanggan,
+            'alamat'=> $request->alamat,
+            'jenis_kelamin'=> $request->jenis_kelamin,
+            'tanggal_lahir'=>$request->tanggal_lahir
+        ]);
+
+        return redirect()->route('pelanggan_index')->with('created', 'Data berhasil ditambahkan!');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($pelanggan_id)
     {
-        //
+        $pelanggan = Pelanggan2301010068::where('id', $pelanggan_id)->delete();
+
+        return redirect()->route('pelanggan_index')->with('deleted', 'Data berhasil dihapus!');
     }
 }

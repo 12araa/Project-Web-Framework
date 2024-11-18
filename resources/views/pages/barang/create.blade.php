@@ -1,11 +1,12 @@
-@extends('layouts\master');
+
+@extends('layouts.master')
 
 @section('content')
-<div class="px-5 py-5">
+<div class="container">
     <div class="card">
         <div class="card-body">
+            <div class="table-responsive">
                 <h1>Form Tambah Data Barang</h1>
-                <div>
                 <form action="{{ route('barang_store')}}" method="post">
                     @csrf
                     <hr>
@@ -27,7 +28,9 @@
                         <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
-                </div>
+            </div>
         </div>
     </div>
 </div>
+@endsection
+
